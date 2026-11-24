@@ -1,26 +1,188 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* dark: varyantı, betiğin <html>'e yazdığı data-theme'e bakar */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Renk belirteçleri. Lacivert aksan CV ile aynı (#1a3a5c). */
+:root {
+  color-scheme: light;
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --surface-2: #edf1f6;
+  --ink: #0d1926;
+  --ink-2: #39465a;
+  --muted: #637083;
+  --line: #dce3eb;
+  --accent: #1a3a5c;
+  --accent-2: #2c5f8a;
+  --accent-ink: #ffffff;
+  --live: #138a57;
+  --grid: rgb(26 58 92 / 0.07);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0a111b;
+    --surface: #0f1825;
+    --surface-2: #15202f;
+    --ink: #e8eef6;
+    --ink-2: #bfcad9;
+    --muted: #8b98aa;
+    --line: #1f2c3e;
+    --accent: #8db9e6;
+    --accent-2: #b7d3f1;
+    --accent-ink: #0a111b;
+    --live: #3fcf8f;
+    --grid: rgb(141 185 230 / 0.06);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a111b;
+  --surface: #0f1825;
+  --surface-2: #15202f;
+  --ink: #e8eef6;
+  --ink-2: #bfcad9;
+  --muted: #8b98aa;
+  --line: #1f2c3e;
+  --accent: #8db9e6;
+  --accent-2: #b7d3f1;
+  --accent-ink: #0a111b;
+  --live: #3fcf8f;
+  --grid: rgb(141 185 230 / 0.06);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-ink: var(--accent-ink);
+  --color-live: var(--live);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-instrument), ui-serif, Georgia, serif;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Sabit başlığın altında kalmasın */
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Hero arkasındaki ince çizgili zemin */
+.blueprint {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 40%, transparent 100%);
+}
+
+/* Giriş ve kaydırma animasyonları: hareket azaltma tercihine uyar */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+  }
+
+  .pop {
+    animation: pop 0.45s cubic-bezier(0.2, 0.7, 0.2, 1.4) both;
+    animation-delay: calc(0.5s + var(--d, 0s));
+  }
+
+  .pulse {
+    animation: pulse 2.4s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.55;
+    scale: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+    scale: 2.6;
+  }
 }

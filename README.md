@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# yasingulsoy.com
 
-## Getting Started
+Yasin Gülsoy'un kişisel sitesi. Türkçe `/`, İngilizce `/en` adresinde.
 
-First, run the development server:
+## Çalıştırma
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production derlemesi
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Yapı
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Yol | Ne var |
+| --- | --- |
+| `lib/content.ts` | Sitedeki bütün metinler, Türkçe ve İngilizce. İçerik değişikliği buradan yapılır. |
+| `lib/site.ts` | Alan adı, e-posta ve profil bağlantıları |
+| `components/` | Sayfa bölümleri: başlık, giriş, terfi grafiği, deneyim, projeler, iletişim |
+| `app/(tr)`, `app/(en)/en` | İki dil için ayrı kök layout'lar (`<html lang>` doğru olsun diye) |
+| `app/global-not-found.tsx` | Eşleşmeyen adresler için 404 sayfası |
+| `lib/og.tsx` | LinkedIn, WhatsApp ve X önizlemelerinde görünen paylaşım görseli |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Metinler CV'den alındı (`Projects/cv/cv.html` ve `cv-en.html`). CV değişince `lib/content.ts` de güncellenmeli.
 
-## Learn More
+## Teknolojiler
 
-To learn more about Next.js, take a look at the following resources:
+Next.js 16 (App Router, Cache Components), React 19, Tailwind CSS 4, TypeScript. Yazı tipleri: Geist, Geist Mono, Instrument Serif.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Açık ve koyu tema var. İlk açılışta sistem tercihi kullanılıyor, seçim tarayıcıda saklanıyor.
